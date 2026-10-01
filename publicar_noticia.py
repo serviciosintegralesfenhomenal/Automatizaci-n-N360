@@ -19,6 +19,23 @@ def generar_slug(texto):
     texto = re.sub(r'[^a-z0-9\s-]', '', texto)
     return re.sub(r'[\s-]+', '-', texto).strip('-')
 
+def obtener_imagen_de_url(url_noticia):
+    """ Extrae la imagen principal (og:image) desde la página fuente """
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        res = requests.get(url_noticia, headers=headers, timeout=5)
+        if res.status_code == 200:
+            match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', res.text)
+            if match:
+                return match.group(1)
+            match_alt = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', res.text)
+            if match_alt:
+                return match_alt.group(1)
+    except Exception as e:
+        print(f"⚠️ No se pudo extraer imagen de la fuente: {e}")
+    
+    return "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80"
+
 def obtener_ultima_noticia_rss():
     response = requests.get(FEED_RSS_URL)
     if response.status_code == 200:
@@ -68,7 +85,7 @@ def procesar_con_gemini(titulo_original):
             print(f"Error procesando JSON de Gemini: {e}")
     return None
 
-def guardar_nota_en_sanity(nota_data):
+def guardar_nota_en_sanity(nota_data, url_imagen):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {SANITY_TOKEN}"
@@ -84,6 +101,7 @@ def guardar_nota_en_sanity(nota_data):
         "contenido": nota_data["contenido"],
         "categoria": nota_data["categoria"],
         "copyRedes": nota_data["copyRedes"],
+        "imagenUrl": url_imagen,
         "fechaPublicacion": datetime.utcnow().isoformat() + "Z"
     }
 
@@ -91,7 +109,7 @@ def guardar_nota_en_sanity(nota_data):
     response = requests.post(SANITY_API_URL, headers=headers, json=payload)
     
     if response.status_code == 200:
-        print("✅ Nota procesada con Gemini y creada exitosamente en Sanity.io")
+        print("✅ Nota con imagen procesada y creada exitosamente en Sanity.io")
         return response.json()
     else:
         print(f"❌ Error al guardar en Sanity: {response.status_code}")
@@ -104,10 +122,13 @@ if __name__ == "__main__":
     
     if titulo_rss:
         print(f"📰 Noticia detectada: {titulo_rss}")
+        print("🖼️ Obteniendo URL de imagen de la noticia...")
+        imagen_url = obtener_imagen_de_url(link_rss)
+        
         print("🤖 Procesando y redactando con Gemini...")
         nota_procesada = procesar_con_gemini(titulo_rss)
         
         if nota_procesada:
-            guardar_nota_en_sanity(nota_procesada)
+            guardar_nota_en_sanity(nota_procesada, imagen_url)
     else:
         print("No se encontraron noticias en el feed RSS.")
