@@ -2,9 +2,9 @@ name: Publicacion Automatica de Noticias
 
 on:
   schedule:
-    # Se ejecuta automáticamente todos los días a las 8:00 AM UTC
-    - cron: '0 8 * * *'
-  # Permite presionar un botón para probar el flujo manualmente
+    # Se ejecuta automáticamente al minuto 0 de CADA HORA
+    - cron: '0 * * * *'
+  # Permite presionar el botón "Run workflow" manualmente
   workflow_dispatch:
 
 jobs:
@@ -26,4 +26,6 @@ jobs:
         pip install requests
 
     - name: Ejecutar script de publicación en Sanity
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python publicar_noticia.py
