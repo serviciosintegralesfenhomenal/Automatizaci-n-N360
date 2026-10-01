@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.unsplash.com https://commondatastorage.googleapis.com https://formspree.io https://www.google.com https://*.api.sanity.io https://i.ibb.co https://*.imgur.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' https://commondatastorage.googleapis.com; connect-src 'self' https://formspree.io https://r5pvd6kj.api.sanity.io; frame-src https://www.google.com;">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -213,7 +214,7 @@
         /* --- HERO SECCIÓN --- */
         .hero {
             position: relative;
-            min-height: 65vh;
+            min-height: 50vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -224,6 +225,7 @@
             padding: 2.5rem 1.2rem;
             border: 1px solid rgba(255, 255, 255, 0.05);
             width: 100%;
+            margin-bottom: 2rem;
         }
 
         .hero-watermark {
@@ -267,6 +269,182 @@
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
+        }
+
+        /* --- CARRUSEL DE NOTICIAS DESTACADAS EN HOME --- */
+        .carrusel-seccion {
+            margin-top: 1rem;
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .carrusel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .carrusel-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .carrusel-header h2::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #FF0055;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #FF0055;
+        }
+
+        .carrusel-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            background-color: #0d0d0d;
+        }
+
+        .carrusel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            cursor: pointer;
+        }
+
+        .carrusel-slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .carrusel-slide img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .carrusel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.95) 100%);
+            z-index: 2;
+        }
+
+        .carrusel-info {
+            position: relative;
+            z-index: 3;
+            padding: 2rem;
+            max-width: 850px;
+        }
+
+        .carrusel-badge {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: #FFFFFF;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .carrusel-titulo {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.3;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+        }
+
+        .carrusel-extracto {
+            font-size: 0.92rem;
+            color: #E0E0E0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+
+        .carrusel-controles {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .carrusel-btn {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #FFFFFF;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .carrusel-btn:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .carrusel-indicadores {
+            display: flex;
+            gap: 0.4rem;
+            margin-right: 0.5rem;
+        }
+
+        .indicador-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicador-dot.active {
+            background: var(--accent-blue);
+            width: 22px;
+            border-radius: 10px;
         }
 
         /* --- BOTONES GENERALES --- */
@@ -617,7 +795,7 @@
         .noticia-imagen-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             display: block;
         }
 
@@ -734,7 +912,7 @@
         .lectura-noticia-imagen {
             width: 100%;
             max-height: 480px;
-            object-fit: contain;
+            object-fit: cover;
             background-color: #080808;
             border-radius: 8px;
             margin: 1.2rem 0;
@@ -809,6 +987,12 @@
                 width: 100%;
             }
             .lectura-noticia-container {
+                padding: 1.2rem;
+            }
+            .carrusel-container {
+                height: 320px;
+            }
+            .carrusel-info {
                 padding: 1.2rem;
             }
         }
@@ -925,7 +1109,7 @@
     <header class="header">
         <div class="logo">
             <button class="logo-btn" onclick="cambiarPestana('inicio')">
-                <img src="logo.jpg" alt="PRODUCCIONES 360" class="logo-img" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){ this.style.display='none'; document.getElementById('logo-text').style.display='inline-block'; };">
+                <img src="logo.jpg" alt="PRODUCCIONES 360" class="logo-img" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){ this.style.display='none'; document.getElementById('logo-text').style.display='inline-block'; };">
                 <span id="logo-text" class="logo-text-fallback" style="display:none;">PRODUCCIONES 360</span>
             </button>
         </div>
@@ -947,7 +1131,7 @@
         <!-- PESTAÑA 1: INICIO -->
         <section id="inicio" class="tab-content active">
             <div class="hero">
-                <img src="logo.jpg" alt="Watermark" class="hero-watermark" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){ this.style.display='none'; };">
+                <img src="logo.jpg" alt="Watermark" class="hero-watermark" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){ this.style.display='none'; };">
                 
                 <div class="hero-content">
                     <h1>Materializando Ideas</h1>
@@ -955,6 +1139,21 @@
                     <div class="hero-buttons">
                         <button class="btn btn-primary" onclick="cambiarPestana('servicios')">Ver Servicios</button>
                         <button class="btn btn-secondary" onclick="cambiarPestana('contacto')">Contáctanos</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARRUSEL DE NOTICIAS DE MAYOR IMPACTO -->
+            <div class="carrusel-seccion">
+                <div class="carrusel-header">
+                    <h2>Últimas Noticas de Impacto</h2>
+                    <span style="font-size: 0.85rem; color: #AAAAAA;">Actualizado en tiempo real</span>
+                </div>
+                
+                <div class="carrusel-container" id="carrusel-wrapper">
+                    <!-- Los slides se cargarán dinámicamente desde Sanity -->
+                    <div style="display: flex; height: 100%; align-items: center; justify-content: center; color: #888888;">
+                        Cargando noticias destacadas...
                     </div>
                 </div>
             </div>
@@ -1134,7 +1333,7 @@
             <!-- BANNERS AUTOAJUSTABLES -->
             <div class="banner-container">
                 <a href="#contacto" onclick="cambiarPestana('contacto')">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Banner Publicitario" onerror="this.parentElement.style.display='none';">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Banner Publicitario" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none';">
                 </a>
             </div>
 
@@ -1157,7 +1356,7 @@
                 
                 <h1 id="lectura-titulo" class="lectura-noticia-titulo"></h1>
                 
-                <img id="lectura-imagen" class="lectura-noticia-imagen" src="" alt="Imagen Noticia">
+                <img id="lectura-imagen" class="lectura-noticia-imagen" src="" alt="Imagen Noticia" referrerpolicy="no-referrer">
                 
                 <div id="lectura-cuerpo" class="lectura-noticia-cuerpo"></div>
 
@@ -1282,16 +1481,17 @@
                 if (btnNoticias) btnNoticias.classList.add('active');
             }
 
-            if (idPestana === 'noticias') { cargarNoticiasSanity(); }
+            if (idPestana === 'noticias' || idPestana === 'inicio') { cargarNoticiasSanity(); }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         let noticiasGuardadas = [];
+        let indexCarruselActual = 0;
+        let temporizadorCarrusel = null;
+
+        const FALLBACK_IMAGEN = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
 
         async function cargarNoticiasSanity() {
-            const contenedor = document.getElementById('contenedor-noticias');
-            if (!contenedor) return;
-
             const SANITY_PROJECT_ID = "r5pvd6kj";
             const SANITY_DATASET = "production";
             
@@ -1311,7 +1511,7 @@
                 const result = await response.json();
                 const rawNoticias = result.result || [];
 
-                // Filtrar duplicados por título idéntico
+                // Filtrar duplicados
                 const titulosVistos = new Set();
                 noticiasGuardadas = rawNoticias.filter(nota => {
                     if (!nota.titulo) return false;
@@ -1321,52 +1521,130 @@
                     return true;
                 });
 
-                if (noticiasGuardadas.length === 0) {
-                    contenedor.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: var(--text-secondary);">No hay noticias publicadas por el momento.</p>';
-                    return;
-                }
+                // Renderizar carrusel en Home y Grid en Noticias
+                renderizarCarruselHome();
+                renderizarGridNoticias();
 
-                contenedor.innerHTML = '';
-                noticiasGuardadas.forEach((nota, index) => {
-                    const fechaFormat = nota.fechaPublicacion 
-                        ? new Date(nota.fechaPublicacion).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })
-                        : '';
-
-                    // Imagen por defecto de alta resolución si no existe
-                    const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' 
-                        ? nota.imagenUrl 
-                        : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-
-                    const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
-                    const extracto50 = textoLimpio.length > 50 ? textoLimpio.substring(0, 50) + '...' : textoLimpio;
-
-                    const tarjeta = `
-                        <article class="tarjeta-noticia" onclick="abrirLecturaNoticia(${index})">
-                            <div class="noticia-imagen-wrapper">
-                                <img src="${imagenSrc}" alt="${nota.titulo}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';">
-                                <div class="noticia-overlay-titulo">
-                                    <h3>${nota.titulo || 'Sin título'}</h3>
-                                </div>
-                            </div>
-                            <div class="noticia-body-info">
-                                <div class="noticia-meta">
-                                    <span class="noticia-categoria">${nota.categoria || 'General'}</span>
-                                    <span class="noticia-fecha">${fechaFormat}</span>
-                                </div>
-                                <p class="noticia-extracto">${extracto50}</p>
-                                <span class="btn-expandir-noticia">Leer noticia completa →</span>
-                            </div>
-                        </article>
-                    `;
-                    contenedor.innerHTML += tarjeta;
-                });
             } catch (error) {
                 console.error("Error al cargar noticias de Sanity:", error);
-                contenedor.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: #ff5555;">No se pudieron cargar las noticias en este momento.</p>';
             }
         }
 
-        // DESPLIEGA LA PANTALLA COMPLETA DE LECTURA DE NOTICIA
+        // RENDERIZA LAS 4 NOTICIAS DE MAYOR IMPACTO EN EL CARRUSEL DEL HOME
+        function renderizarCarruselHome() {
+            const contenedor = document.getElementById('carrusel-wrapper');
+            if (!contenedor) return;
+
+            const destacadas = noticiasGuardadas.slice(0, 4);
+
+            if (destacadas.length === 0) {
+                contenedor.innerHTML = '<div style="display:flex; height:100%; align-items:center; justify-content:center; color:#888;">No hay noticias destacadas por el momento.</div>';
+                return;
+            }
+
+            let slidesHtml = '';
+            destacadas.forEach((nota, idx) => {
+                const img = nota.imagenUrl && nota.imagenUrl.trim() !== '' ? nota.imagenUrl : FALLBACK_IMAGEN;
+                const activeClass = idx === 0 ? 'active' : '';
+                const cat = nota.categoria || 'ÚLTIMA HORA';
+                const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
+
+                slidesHtml += `
+                    <div class="carrusel-slide ${activeClass}" id="slide-${idx}" onclick="abrirLecturaNoticia(${idx})">
+                        <img src="${img}" alt="${nota.titulo}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='${FALLBACK_IMAGEN}';">
+                        <div class="carrusel-overlay"></div>
+                        <div class="carrusel-info">
+                            <span class="carrusel-badge">${cat}</span>
+                            <h3 class="carrusel-titulo">${nota.titulo}</h3>
+                            <p class="carrusel-extracto">${textoLimpio}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Agregar botones e indicadores
+            let dotsHtml = '';
+            destacadas.forEach((_, idx) => {
+                dotsHtml += `<div class="indicador-dot ${idx === 0 ? 'active' : ''}" onclick="irASlide(${idx}); event.stopPropagation();"></div>`;
+            });
+
+            const controlesHtml = `
+                <div class="carrusel-controles">
+                    <div class="carrusel-indicadores">${dotsHtml}</div>
+                    <button class="carrusel-btn" onclick="slideAnterior(); event.stopPropagation();">❮</button>
+                    <button class="carrusel-btn" onclick="siguienteSlide(); event.stopPropagation();">❯</button>
+                </div>
+            `;
+
+            contenedor.innerHTML = slidesHtml + controlesHtml;
+
+            // Iniciar rotación automática cada 5 segundos
+            if (temporizadorCarrusel) clearInterval(temporizadorCarrusel);
+            temporizadorCarrusel = setInterval(siguienteSlide, 5000);
+        }
+
+        function irASlide(index) {
+            const destacadasCount = Math.min(noticiasGuardadas.length, 4);
+            if (destacadasCount === 0) return;
+
+            document.querySelectorAll('.carrusel-slide').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.indicador-dot').forEach(d => d.classList.remove('active'));
+
+            indexCarruselActual = (index + destacadasCount) % destacadasCount;
+
+            const targetSlide = document.getElementById(`slide-${indexCarruselActual}`);
+            if (targetSlide) targetSlide.classList.add('active');
+
+            const dots = document.querySelectorAll('.indicador-dot');
+            if (dots[indexCarruselActual]) dots[indexCarruselActual].classList.add('active');
+        }
+
+        function siguienteSlide() { irASlide(indexCarruselActual + 1); }
+        function slideAnterior() { irASlide(indexCarruselActual - 1); }
+
+        // RENDERIZA TODAS LAS NOTICIAS EN EL GRID DE 3 COLUMNAS EN LA SECCIÓN NOTICIAS
+        function renderizarGridNoticias() {
+            const contenedor = document.getElementById('contenedor-noticias');
+            if (!contenedor) return;
+
+            if (noticiasGuardadas.length === 0) {
+                contenedor.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: var(--text-secondary);">No hay noticias publicadas por el momento.</p>';
+                return;
+            }
+
+            contenedor.innerHTML = '';
+            noticiasGuardadas.forEach((nota, index) => {
+                const fechaFormat = nota.fechaPublicacion 
+                    ? new Date(nota.fechaPublicacion).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })
+                    : '';
+
+                const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' ? nota.imagenUrl : FALLBACK_IMAGEN;
+                const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
+                const extracto50 = textoLimpio.length > 50 ? textoLimpio.substring(0, 50) + '...' : textoLimpio;
+
+                const tarjeta = `
+                    <article class="tarjeta-noticia" onclick="abrirLecturaNoticia(${index})">
+                        <div class="noticia-imagen-wrapper">
+                            <img src="${imagenSrc}" alt="${nota.titulo}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='${FALLBACK_IMAGEN}';">
+                            <div class="noticia-overlay-titulo">
+                                <h3>${nota.titulo || 'Sin título'}</h3>
+                            </div>
+                        </div>
+                        <div class="noticia-body-info">
+                            <div class="noticia-meta">
+                                <span class="noticia-categoria">${nota.categoria || 'General'}</span>
+                                <span class="noticia-fecha">${fechaFormat}</span>
+                            </div>
+                            <p class="noticia-extracto">${extracto50}</p>
+                            <span class="btn-expandir-noticia">Leer noticia completa →</span>
+                        </div>
+                    </article>
+                `;
+                contenedor.innerHTML += tarjeta;
+            });
+        }
+
+        // VISTA DE LECTURA COMPLETA
         function abrirLecturaNoticia(index) {
             const nota = noticiasGuardadas[index];
             if (!nota) return;
@@ -1379,11 +1657,10 @@
             document.getElementById('lectura-cuerpo').innerText = nota.contenido || '';
 
             const imgEl = document.getElementById('lectura-imagen');
-            const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' 
-                ? nota.imagenUrl 
-                : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+            const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' ? nota.imagenUrl : FALLBACK_IMAGEN;
             
             imgEl.src = imagenSrc;
+            imgEl.onerror = function() { this.src = FALLBACK_IMAGEN; };
             imgEl.style.display = 'block';
 
             cambiarPestana('ver-noticia');
@@ -1437,6 +1714,9 @@
                 alert('Error de conexión. Verifica tu red e intenta nuevamente.');
             }
         }
+
+        // Cargar noticias al iniciar
+        document.addEventListener('DOMContentLoaded', cargarNoticiasSanity);
 
         document.addEventListener('contextmenu', e => {
             if (e.target.tagName === 'VIDEO' || e.target.tagName === 'IMG') {
