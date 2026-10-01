@@ -690,7 +690,7 @@
             padding-top: 0.5rem;
         }
 
-        /* --- NUEVA PESTAÑA / VISTA DE LECTURA COMPLETA --- */
+        /* --- PESTAÑA DEDICADA DE LECTURA COMPLETA --- */
         .lectura-noticia-container {
             max-width: 850px;
             margin: 0 auto;
@@ -1143,7 +1143,7 @@
             </div>
         </section>
 
-        <!-- PESTAÑA DEDICADA DE LECTURA COMPLETA (SE ACTIVA AL TOCAR CUALQUIER NOTICIA) -->
+        <!-- PESTAÑA DEDICADA DE LECTURA COMPLETA -->
         <section id="ver-noticia" class="tab-content">
             <div class="lectura-noticia-container">
                 <button class="btn-volver-noticias" onclick="cambiarPestana('noticias')">
@@ -1278,7 +1278,6 @@
             if (botonActivo) {
                 botonActivo.classList.add('active');
             } else if (idPestana === 'ver-noticia') {
-                // Mantener el botón "Noticias" iluminado en la barra superior mientras se lee
                 const btnNoticias = document.querySelector(`.nav-btn[data-tab="noticias"]`);
                 if (btnNoticias) btnNoticias.classList.add('active');
             }
@@ -1296,7 +1295,7 @@
             const SANITY_PROJECT_ID = "r5pvd6kj";
             const SANITY_DATASET = "production";
             
-            const query = encodeURIComponent(`*[_type == "noticia" && !($prueba in titulo)] | order(fechaPublicacion desc)[0..25]{
+            const query = encodeURIComponent(`*[_type == "noticia"] | order(fechaPublicacion desc)[0..20]{
                 _id,
                 titulo,
                 contenido,
@@ -1305,35 +1304,20 @@
                 fechaPublicacion
             }`);
             
-            const params = encodeURIComponent(`&$prueba="Informe 360 activa sistema automatizado"`);
-            const urlSanity = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/${SANITY_DATASET}?query=${query}${params}`;
+            const urlSanity = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/${SANITY_DATASET}?query=${query}`;
 
             try {
                 const response = await fetch(urlSanity);
                 const result = await response.json();
                 const rawNoticias = result.result || [];
 
-                // FILTRO INTELIGENTE: Omitir repetidos y portadas genéricas de Google
-                const temasVistos = new Set();
+                // Filtrar duplicados por título idéntico
+                const titulosVistos = new Set();
                 noticiasGuardadas = rawNoticias.filter(nota => {
                     if (!nota.titulo) return false;
-                    
-                    if (nota.imagenUrl && nota.imagenUrl.includes('google')) {
-                        return false;
-                    }
-
-                    const palabrasClave = nota.titulo
-                        .toLowerCase()
-                        .replace(/[^a-z0-9áéíóúñ\s]/gi, '')
-                        .split(/\s+/)
-                        .filter(p => p.length > 4);
-
-                    const temaIdentificador = palabrasClave.slice(0, 3).join('-');
-                    if (temasVistos.has(temaIdentificador)) {
-                        return false;
-                    }
-
-                    temasVistos.add(temaIdentificador);
+                    const titLimpio = nota.titulo.trim().toLowerCase();
+                    if (titulosVistos.has(titLimpio)) return false;
+                    titulosVistos.add(titLimpio);
                     return true;
                 });
 
@@ -1348,7 +1332,10 @@
                         ? new Date(nota.fechaPublicacion).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })
                         : '';
 
-                    const imagenSrc = nota.imagenUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+                    // Imagen por defecto de alta resolución si no existe
+                    const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' 
+                        ? nota.imagenUrl 
+                        : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
 
                     const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
                     const extracto50 = textoLimpio.length > 50 ? textoLimpio.substring(0, 50) + '...' : textoLimpio;
@@ -1356,7 +1343,7 @@
                     const tarjeta = `
                         <article class="tarjeta-noticia" onclick="abrirLecturaNoticia(${index})">
                             <div class="noticia-imagen-wrapper">
-                                <img src="${imagenSrc}" alt="${nota.titulo}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';">
+                                <img src="${imagenSrc}" alt="${nota.titulo}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';">
                                 <div class="noticia-overlay-titulo">
                                     <h3>${nota.titulo || 'Sin título'}</h3>
                                 </div>
@@ -1379,7 +1366,7 @@
             }
         }
 
-        // FUNCIÓN QUE ABRE LA VISTA COMPLETA EN LA PESTAÑA 'ver-noticia'
+        // DESPLIEGA LA PANTALLA COMPLETA DE LECTURA DE NOTICIA
         function abrirLecturaNoticia(index) {
             const nota = noticiasGuardadas[index];
             if (!nota) return;
@@ -1392,14 +1379,13 @@
             document.getElementById('lectura-cuerpo').innerText = nota.contenido || '';
 
             const imgEl = document.getElementById('lectura-imagen');
-            if (nota.imagenUrl) {
-                imgEl.src = nota.imagenUrl;
-                imgEl.style.display = 'block';
-            } else {
-                imgEl.style.display = 'none';
-            }
+            const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' 
+                ? nota.imagenUrl 
+                : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+            
+            imgEl.src = imagenSrc;
+            imgEl.style.display = 'block';
 
-            // Cambiar a la vista completa de la noticia
             cambiarPestana('ver-noticia');
         }
 
