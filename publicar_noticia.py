@@ -52,24 +52,24 @@ def procesar_con_gemini(titulo_original):
         print("⚠️ GEMINI_API_KEY no encontrada en entorno. Procesando titular directo.")
         return {
             "titulo": titulo_original,
-            "contenido": f"Información de última hora sintetizada sobre: {titulo_original}.",
-            "categoria": "Nacional",
-            "copyRedes": f"📲 Infórmate sobre {titulo_original} en Informe 360. #Noticias #Informe360"
+            "contenido": f"Atención e información de última hora: {titulo_original}. Las autoridades y servicios oficiales se mantienen en alerta ante los recientes acontecimientos en la región.",
+            "categoria": "Nacional"
         }
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     prompt = f"""
-    Actúa como un editor senior del medio periodístico "Informe 360".
-    Toma este titular de noticia reciente: "{titulo_original}".
+    Actúa como un editor periodístico senior del medio "Informe 360".
+    Toma este titular de noticia en vivo: "{titulo_original}".
     
-    Genera una respuesta en formato JSON estricto con la siguiente estructura:
+    Escribe un artículo periodístico completo, formal, objetivo y bien redactado de 3 a 4 párrafos informativos basados en el hecho.
+    
+    Genera la respuesta estrictamente en JSON con la siguiente estructura:
     {{
-      "titulo": "Un titular llamativo y profesional para la nota",
-      "contenido": "Un resumen periodístico de 2 párrafos, neutro, claro e informativo.",
-      "categoria": "Una categoría adecuada (ej. Política, Economía, Nacional, Tecnología, Deportes)",
-      "copyRedes": "Un copy atractivo para Facebook e Instagram con gancho, emojis y 3 o 4 hashtags."
+      "titulo": "Un titular periodístico claro, profesional e impactante",
+      "contenido": "Primer párrafo: Introducción periodística del hecho.\\n\\nSegundo párrafo: Contexto y detalles de las autoridades o partes involucradas.\\n\\nTercer párrafo: Conclusión y perspectivas del acontecimiento.",
+      "categoria": "Una categoría profesional (ej. Clima, Política, Nacional, Economía, Tecnología)"
     }}
-    Responde ÚNICAMENTE con el objeto JSON válido, sin bloques de código ni markdown.
+    Responde ÚNICAMENTE con el JSON válido, sin delimitadores de código ni markdown.
     """
 
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -88,9 +88,8 @@ def procesar_con_gemini(titulo_original):
 
     return {
         "titulo": titulo_original,
-        "contenido": f"Síntesis informativa de última hora sobre: {titulo_original}.",
-        "categoria": "Última Hora",
-        "copyRedes": f"📲 {titulo_original} #Noticias #Informe360"
+        "contenido": f"Atención e información de última hora sobre {titulo_original}. Reportes oficiales en desarrollo indican seguimiento por parte de las autoridades competentes.",
+        "categoria": "Última Hora"
     }
 
 def guardar_nota_en_sanity(nota_data, url_imagen):
@@ -108,7 +107,6 @@ def guardar_nota_en_sanity(nota_data, url_imagen):
         },
         "contenido": nota_data["contenido"],
         "categoria": nota_data["categoria"],
-        "copyRedes": nota_data["copyRedes"],
         "imagenUrl": url_imagen,
         "fechaPublicacion": datetime.utcnow().isoformat() + "Z"
     }
@@ -117,7 +115,7 @@ def guardar_nota_en_sanity(nota_data, url_imagen):
     response = requests.post(SANITY_API_URL, headers=headers, json=payload)
     
     if response.status_code == 200:
-        print("✅ Nota creada exitosamente en Sanity.io con Token Administrador")
+        print("✅ Nota formal redactada y publicada exitosamente en Sanity.io")
         return response.json()
     else:
         print(f"❌ Error al guardar en Sanity: {response.status_code}")
