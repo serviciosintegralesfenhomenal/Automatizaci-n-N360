@@ -2,7 +2,7 @@ import requests
 
 SANITY_PROJECT_ID = "r5pvd6kj"
 SANITY_DATASET = "production"
-SANITY_TOKEN = "skCWw2XQF0IsvyrUPsD8JGzTfK1lCtOSzj5x84ZmrCEKLTfeE0vX7JuFMgj7F2FGzVeLEbYQnMLCwC8Bx563LxehFeICKBhWXZ6IL901oPIiOAidkrCbTVXBH0eN9W2foN4iDUTwxF1ijFhiQQUy2VbxWtwtS6od8OpNKfXtkqBq4ZfhUVUW"
+SANITY_TOKEN = "skjYGnzDMTl3X4T5WSGhhcifM5PAs5nc0cprVbP6U4QfRzRzQ9tJbamKo0qFYnm4XOghX3Smqn2UXLggAAarLstl32bmAtu4xIwD74S2BV3ATUtpttN1LokthJj6HjtT5Pd7lhT0g7T4VUzBUkbhavOFb0GUQXzqVSxeHXOZajyZSHrmiHNm"
 
 # 1. Obtener los IDs de todas las notas actuales
 url_query = f"https://{SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/{SANITY_DATASET}?query=*[_type=='noticia']._id"
