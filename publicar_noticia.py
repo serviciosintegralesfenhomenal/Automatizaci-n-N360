@@ -20,21 +20,28 @@ def generar_slug(texto):
     return re.sub(r'[\s-]+', '-', texto).strip('-')
 
 def obtener_imagen_de_url(url_noticia):
-    """ Extrae la imagen principal (og:image) desde la página fuente de la noticia """
+    """ Desenvuelve la redirección de Google News y extrae la fotografía real og:image del medio """
     try:
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-        res = requests.get(url_noticia, headers=headers, timeout=5)
-        if res.status_code == 200:
-            match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', res.text)
-            if match:
-                return match.group(1)
-            match_alt = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', res.text)
-            if match_alt:
-                return match_alt.group(1)
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+        # Resolver redirección de Google News
+        res = requests.get(url_noticia, headers=headers, timeout=8, allow_redirects=True)
+        url_real = res.url
+        html_content = res.text
+
+        # Si aterrizó en la web original, buscar la meta og:image
+        match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', html_content, re.IGNORECASE)
+        if match and "google" not in match.group(1).lower():
+            return match.group(1)
+            
+        match_alt = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', html_content, re.IGNORECASE)
+        if match_alt and "google" not in match_alt.group(1).lower():
+            return match_alt.group(1)
+            
     except Exception as e:
-        print(f"⚠️ No se pudo extraer imagen de la fuente: {e}")
+        print(f"⚠️️ No se pudo extraer imagen real de la fuente: {e}")
     
-    return "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80"
+    # Fotografía temática de prensa en alta resolución si el sitio bloquea el rastreo
+    return "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80"
 
 def obtener_ultima_noticia_rss():
     response = requests.get(FEED_RSS_URL)
@@ -49,10 +56,10 @@ def obtener_ultima_noticia_rss():
 
 def procesar_con_gemini(titulo_original):
     if not GEMINI_API_KEY:
-        print("⚠️ GEMINI_API_KEY no encontrada en entorno. Procesando titular directo.")
+        print("⚠️ GEMINI_API_KEY no encontrada en entorno. Procesando texto directo.")
         return {
             "titulo": titulo_original,
-            "contenido": f"Atención e información de última hora: {titulo_original}. Las autoridades y servicios oficiales se mantienen en alerta ante los recientes acontecimientos en la región.",
+            "contenido": f"Atención e información de última hora: {titulo_original}. Las autoridades y servicios oficiales se mantienen en alerta ante los recientes acontecimientos en la región. Se recomienda a la población mantenerse informada a través de los canales institucionales.",
             "categoria": "Nacional"
         }
 
@@ -61,7 +68,7 @@ def procesar_con_gemini(titulo_original):
     Actúa como un editor periodístico senior del medio "Informe 360".
     Toma este titular de noticia en vivo: "{titulo_original}".
     
-    Escribe un artículo periodístico completo, formal, objetivo y bien redactado de 3 a 4 párrafos informativos basados en el hecho.
+    Escribe un artículo periodístico completo, formal, objetivo y bien redactado de 3 a 4 párrafos informativos basados en el hecho. No agregues copies ni texto para redes sociales.
     
     Genera la respuesta estrictamente en JSON con la siguiente estructura:
     {{
@@ -128,8 +135,9 @@ if __name__ == "__main__":
     
     if titulo_rss:
         print(f"📰 Noticia detectada: {titulo_rss}")
-        print("🖼️ Extrayendo imagen de portada...")
+        print("🖼️ Extrayendo fotografía real del medio de origen...")
         imagen_url = obtener_imagen_de_url(link_rss)
+        print(f"📸 URL Imagen Obtenida: {imagen_url}")
         
         print("🤖 Procesando y redactando con Gemini...")
         nota_procesada = procesar_con_gemini(titulo_rss)
