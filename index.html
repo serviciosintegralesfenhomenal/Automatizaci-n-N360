@@ -1292,7 +1292,7 @@
             const SANITY_PROJECT_ID = "r5pvd6kj";
             const SANITY_DATASET = "production";
             
-            const query = encodeURIComponent(`*[_type == "noticia" && !($prueba in titulo)] | order(fechaPublicacion desc)[0..9]{
+            const query = encodeURIComponent(`*[_type == "noticia" && !($prueba in titulo)] | order(fechaPublicacion desc)[0..19]{
                 _id,
                 titulo,
                 contenido,
@@ -1307,7 +1307,17 @@
             try {
                 const response = await fetch(urlSanity);
                 const result = await response.json();
-                noticiasGuardadas = result.result || [];
+                const rawNoticias = result.result || [];
+
+                // FILTRO ANTI-DUPLICADOS: Omitir noticias con el mismo título
+                const titulosVistos = new Set();
+                noticiasGuardadas = rawNoticias.filter(nota => {
+                    if (!nota.titulo || titulosVistos.has(nota.titulo.trim())) {
+                        return false;
+                    }
+                    titulosVistos.add(nota.titulo.trim());
+                    return true;
+                });
 
                 if (noticiasGuardadas.length === 0) {
                     contenedor.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: var(--text-secondary);">No hay noticias publicadas por el momento.</p>';
