@@ -1,46 +1,21 @@
-def procesar_con_gemini(titulo_original):
-    if not GEMINI_API_KEY:
-        print("⚠️ GEMINI_API_KEY no encontrada. Usando titular real directamente.")
-        return {
-            "titulo": titulo_original,
-            "contenido": f"Información de última hora sobre: {titulo_original}.",
-            "categoria": "Nacional",
-            "copyRedes": f"📲 Lee más sobre {titulo_original} en Informe 360. #Noticias #Informe360"
-        }
+import requests
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
-    prompt = f"""
-    Actúa como un editor senior del medio periodístico "Informe 360".
-    Toma este titular de noticia reciente: "{titulo_original}".
+SANITY_PROJECT_ID = "r5pvd6kj"
+SANITY_DATASET = "production"
+SANITY_TOKEN = "skCWw2XQF0IsvyrUPsD8JGzTfK1lCtOSzj5x84ZmrCEKLTfeE0vX7JuFMgj7F2FGzVeLEbYQnMLCwC8Bx563LxehFeICKBhWXZ6IL901oPIiOAidkrCbTVXBH0eN9W2foN4iDUTwxF1ijFhiQQUy2VbxWtwtS6od8OpNKfXtkqBq4ZfhUVUW"
+
+# 1. Obtener los IDs de todas las notas actuales
+url_query = f"https://{SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/{SANITY_DATASET}?query=*[_type=='noticia']._id"
+res = requests.get(url_query).json()
+ids = res.get("result", [])
+
+if ids:
+    # 2. Eliminar todas las publicaciones de prueba
+    mutations = [{"delete": {"id": doc_id}} for doc_id in ids]
+    url_mutate = f"https://{SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/mutate/{SANITY_DATASET}"
+    headers = {"Authorization": f"Bearer {SANITY_TOKEN}", "Content-Type": "application/json"}
     
-    Genera una respuesta en formato JSON estricto con la siguiente estructura:
-    {{
-      "titulo": "Un titular llamativo y profesional para la nota",
-      "contenido": "Un resumen periodístico de 2 párrafos, neutro, claro e informativo.",
-      "categoria": "Una categoría adecuada (ej. Política, Economía, Nacional, Tecnología, Deportes)",
-      "copyRedes": "Un copy atractivo para Facebook e Instagram con gancho, emojis y 3 o 4 hashtags."
-    }}
-    Responde ÚNICAMENTE con el objeto JSON válido, sin bloques de código ni markdown.
-    """
-
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-    headers = {"Content-Type": "application/json"}
-
-    try:
-        response = requests.post(url, headers=headers, json=payload)
-        if response.status_code == 200:
-            res_text = response.json()['candidates'][0]['content']['parts'][0]['text']
-            res_clean = re.sub(r'^```json\s*|```$', '', res_text.strip(), flags=re.MULTILINE)
-            return json.loads(res_clean)
-        else:
-            print(f"⚠️ Error API Gemini ({response.status_code}): {response.text}")
-    except Exception as e:
-        print(f"⚠️ Excepción al llamar a Gemini: {e}")
-
-    # Respaldo con noticia real si falla la llamada
-    return {
-        "titulo": titulo_original,
-        "contenido": f"Síntesis informativa de última hora sobre: {titulo_original}.",
-        "categoria": "Última Hora",
-        "copyRedes": f"📲 {titulo_original} #Noticias #Informe360"
-    }
+    requests.post(url_mutate, headers=headers, json={"mutations": mutations})
+    print(f"✅ Se eliminaron {len(ids)} noticias de prueba exitosamente.")
+else:
+    print("No hay noticias registradas para borrar.")
