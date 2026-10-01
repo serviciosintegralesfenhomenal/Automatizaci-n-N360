@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.unsplash.com https://commondatastorage.googleapis.com https://formspree.io https://www.google.com https://*.api.sanity.io https://i.ibb.co https://*.imgur.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' https://commondatastorage.googleapis.com; connect-src 'self' https://formspree.io https://r5pvd6kj.api.sanity.io; frame-src https://www.google.com;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    
+    <title>PRODUCCIONES 360 | Productora Audiovisual</title>
+    
+    <!-- Favicon / Logo en la pestaña del navegador -->
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: #EAECEE;
+            --accent-blue: #0055FF;
+            --text-color: #FFFFFF;
+            --text-secondary: #E0E0E0;
+            --nav-text-color: #222222;
+            --font-family: 'Montserrat', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        input, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* --- INTRO / SPLASH SCREEN --- */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intro-fallback-btn {
+            position: absolute;
+            background-color: var(--accent-blue);
+            color: #FFFFFF;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,85,255,0.4);
+            z-index: 100001;
+            display: none;
+        }
+
+        .skip-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(0, 85, 255, 0.85);
+            color: #FFFFFF;
+            border: 1px solid #0055FF;
+            padding: 0.6rem 1.4rem;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            z-index: 100000;
+        }
+
+        .skip-btn:hover {
+            background-color: #0055FF;
+            transform: scale(1.05);
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* --- ENCABEZADO --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--header-bg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #CCCCCC;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .logo-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .logo-text-fallback {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #121212;
+            letter-spacing: 1px;
+        }
+
+        .nav {
+            width: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--nav-text-color);
+            font-family: var(--font-family);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--accent-blue);
+            background-color: rgba(0, 85, 255, 0.08);
+        }
+
+        .nav-btn.active {
+            color: #FFFFFF;
+            background-color: var(--accent-blue);
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content {
+            min-height: 80vh;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .tab-content {
+            display: none;
+            width: 100%;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* --- HERO SECCIÓN CON LOGO DESVANECIDO EN EL FONDO --- */
+        .hero {
+            position: relative;
+            min-height: 65vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #181818 0%, #242424 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 2.5rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+        }
+
+        .hero-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55%;
+            max-width: 500px;
+            opacity: 0.08;
+            pointer-events: none;
+            object-fit: contain;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #FFFFFF;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            color: var(--text-secondary);
+            margin: 0 auto 2rem auto;
+            line-height: 1.5;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* --- BOTONES GENERALES --- */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            font-family: var(--font-family);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #0044cc;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- BANNERS AUTOAJUSTABLES ($0 USD) --- */
+        .banner-container {
+            width: 100%;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .banner-container img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            border-radius: 8px;
+            object-fit: contain;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* --- SERVICIOS EN FILA --- */
+        .section-title {
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #B0B0B0;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .servicios-fila-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            width: 100%;
+        }
+
+        .servicio-fila-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .servicio-fila-item:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .servicio-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35;
+            transition: opacity 0.5s ease, transform 0.6s ease;
+        }
+
+        .servicio-fila-item.active .servicio-bg-image {
+            opacity: 0.85;
+            transform: scale(1.03);
+            filter: brightness(0.9);
+        }
+
+        .servicio-overlay-dark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(15,15,15,0.92) 0%, rgba(15,15,15,0.75) 60%, rgba(15,15,15,0.4) 100%);
+            transition: background 0.4s ease;
+        }
+
+        .servicio-fila-item.active .servicio-overlay-dark {
+            background: linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.8) 70%, rgba(10,10,10,0.5) 100%);
+        }
+
+        .servicio-header-content {
+            position: relative;
+            z-index: 2;
+            padding: 1.2rem 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .servicio-titulo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .servicio-icon {
+            font-size: 1.4rem;
+        }
+
+        .servicio-titulo {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .servicio-toggle-icon {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            transition: transform 0.4s ease;
+        }
+
+        .servicio-fila-item.active .servicio-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .servicio-detalles-content {
+            position: relative;
+            z-index: 2;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 1.8rem;
+        }
+
+        .servicio-fila-item.active .servicio-detalles-content {
+            max-height: 250px;
+            padding: 0 1.8rem 1.5rem 1.8rem;
+        }
+
+        .servicio-detalles-content p {
+            color: #F0F0F0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            max-width: 800px;
+        }
+
+        .btn-cotizar-servicio {
+            padding: 0.6rem 1.4rem;
+            background-color: var(--accent-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.3s ease;
+        }
+
+        .btn-cotizar-servicio:hover {
+            background-color: #0044cc;
+        }
+
+        /* --- CATÁLOGO DE PROYECTOS --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .portfolio-item {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portfolio-media {
+            position: relative;
+            height: 180px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background-color: #000000;
+        }
+
+        .portfolio-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-badge-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 85, 255, 0.9);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: background 0.3s ease, transform 0.2s ease;
+            z-index: 5;
+        }
+
+        .media-badge-btn:hover {
+            background: var(--accent-blue);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: rgba(0, 85, 255, 0.2);
+            color: var(--accent-blue);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        .portfolio-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+        }
+
+        .portfolio-item p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .btn-card {
+            margin-top: auto;
+            width: 100%;
+            padding: 0.65rem;
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--accent-blue);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-card:hover {
+            background-color: var(--accent-blue);
+            color: #FFFFFF;
+        }
+
+        /* --- NOTICIAS: 3 COLUMNAS RESPONSIVAS CON TÍTULO TRASLÚCIDO --- */
+        .noticias-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .noticias-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .noticias-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tarjeta-noticia {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .tarjeta-noticia:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+        }
+
+        /* Contenedor de imagen no cortada */
+        .noticia-imagen-wrapper {
+            position: relative;
+            width: 100%;
+            height: 230px;
+            background-color: #080808;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .noticia-imagen-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Título superpuesto con difuminado/traslúcido */
+        .noticia-overlay-titulo {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.2rem 1rem 0.8rem 1rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0) 100%);
+            backdrop-filter: blur(2px);
+            z-index: 2;
+        }
+
+        .noticia-overlay-titulo h3 {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.3;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .noticia-body-info {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex-grow: 1;
+        }
+
+        .noticia-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+
+        .noticia-categoria {
+            background-color: rgba(0, 85, 255, 0.18);
+            color: var(--accent-blue);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .noticia-fecha {
+            color: #888888;
+        }
+
+        /* Extracto de 50 caracteres */
+        .noticia-extracto {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-top: 0.2rem;
+        }
+
+        .btn-expandir-noticia {
+            background: transparent;
+            border: none;
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-top: auto;
+            text-align: left;
+            padding-top: 0.5rem;
+        }
+
+        /* --- MODAL PARA LEER NOTICIA COMPLETA --- */
+        .modal-noticia-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 999999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-noticia-overlay.active {
+            display: flex;
+        }
+
+        .modal-noticia-content {
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            color: #FFFFFF;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        }
+
+        .modal-cerrar-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .modal-cerrar-btn:hover {
+            background: var(--accent-blue);
+        }
+
+        .modal-imagen {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            background-color: #080808;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .modal-cuerpo {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #E0E0E0;
+            white-space: pre-line;
+            margin-top: 1rem;
+        }
+
+        /* --- MATERIAL RECIENTE --- */
+        .material-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1.5rem;
+            border-radius: 6px;
+        }
+
+        .timeline-card h4 {
+            font-size: 1.1rem;
+            color: #FFFFFF;
+            margin-bottom: 0.4rem;
+        }
+
+        .timeline-card span {
+            font-size: 0.78rem;
+            color: var(--accent-blue);
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.6rem;
+        }
+
+        .timeline-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* --- CONTACTO --- */
+        .contacto-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .contacto-container {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                justify-content: center;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .contacto-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .contacto-form input, .contacto-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #121212;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+        }
+
+        .contacto-form input:focus, .contacto-form textarea:focus {
+            border-color: var(--accent-blue);
+            outline: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ubicacion-info {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            background-color: #25D366;
+            color: #FFFFFF;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .map-container {
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        /* --- BOTÓN FLOTANTE WHATSAPP --- */
+        .whatsapp-flotante {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-decoration: none;
+            z-index: 999;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #0a0a0a;
+            color: #B0B0B0;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRO DE ENTRADA CON REPRODUCCIÓN AUTOMÁTICA -->
+    <div id="intro-overlay" class="intro-overlay">
+        <video id="intro-video" class="intro-video" autoplay muted playsinline webkit-playsinline loop preload="auto">
+            <source src="intro.mp4" type="video/mp4">
+            Tu navegador no soporta reproducción de video.
+        </video>
+        <button id="intro-fallback-btn" class="intro-fallback-btn" onclick="iniciarVideoAudio()">▶ Iniciar Experiencia 360</button>
+        <button class="skip-btn" onclick="cerrarIntro()">Saltar Intro ✕</button>
+    </div>
+
+    <!-- ENCABEZADO -->
+    <header class="header">
+        <div class="logo">
+            <button class="logo-btn" onclick="cambiarPestana('inicio')">
+                <img src="logo.jpg" alt="PRODUCCIONES 360" class="logo-img" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){ this.style.display='none'; document.getElementById('logo-text').style.display='inline-block'; };">
+                <span id="logo-text" class="logo-text-fallback" style="display:none;">PRODUCCIONES 360</span>
+            </button>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><button class="nav-btn active" data-tab="inicio" onclick="cambiarPestana('inicio')">Inicio</button></li>
+                <li><button class="nav-btn" data-tab="servicios" onclick="cambiarPestana('servicios')">Servicios</button></li>
+                <li><button class="nav-btn" data-tab="catalogo" onclick="cambiarPestana('catalogo')">Catálogo</button></li>
+                <li><button class="nav-btn" data-tab="noticias" onclick="cambiarPestana('noticias')">Noticias</button></li>
+                <li><button class="nav-btn" data-tab="material" onclick="cambiarPestana('material')">Material Reciente</button></li>
+                <li><button class="nav-btn" data-tab="contacto" onclick="cambiarPestana('contacto')">Contacto</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- PESTAÑA 1: INICIO -->
+        <section id="inicio" class="tab-content active">
+            <div class="hero">
+                <img src="logo.jpg" alt="Watermark" class="hero-watermark" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){ this.style.display='none'; };">
+                
+                <div class="hero-content">
+                    <h1>Materializando Ideas</h1>
+                    <p>Producciones 360 se encarga de transmutar de la idea al lienzo el contenido que el cliente necesita para su marca.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="cambiarPestana('servicios')">Ver Servicios</button>
+                        <button class="btn btn-secondary" onclick="cambiarPestana('contacto')">Contáctanos</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 2: SERVICIOS -->
+        <section id="servicios" class="tab-content">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <p class="section-subtitle">Haz clic en cualquier servicio para desplegar los detalles en pantalla.</p>
+
+            <div class="servicios-fila-container">
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">🎥</span>
+                            <span class="servicio-titulo">Producción de Video Corporativo</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Videos institucionales, testimoniales, piezas de inducción de personal y comunicación interna en alta definición.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">📡</span>
+                            <span class="servicio-titulo">Transmisiones en Vivo (Streaming)</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Cobertura multicámara e integración en tiempo real para congresos, seminarios y lanzamientos corporativos.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1554048612-b6a482bc67e5?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">📸</span>
+                            <span class="servicio-titulo">Fotografía Profesional</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Retrato ejecutivo, fotografía de producto y cobertura de eventos empresariales de alto nivel.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">📱</span>
+                            <span class="servicio-titulo">Contenido para Redes Sociales</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Reels, TikToks y formato vertical optimizado para generar mayor interacción y alcance orgánico.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">🎬</span>
+                            <span class="servicio-titulo">Spots Publicitarios y Comerciales</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Desarrollo conceptual, guionismo, rodaje profesional e iluminación enfocada en conversión.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">🎙️</span>
+                            <span class="servicio-titulo">Producción de Podcast</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Grabación multicanal de audio y video, edición y clips promocionales para YouTube y Spotify.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+
+                <div class="servicio-fila-item" onclick="toggleServicioFila(this)">
+                    <div class="servicio-bg-image" style="background-image: url('https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=1200&q=80');"></div>
+                    <div class="servicio-overlay-dark"></div>
+                    <div class="servicio-header-content">
+                        <div class="servicio-titulo-wrap">
+                            <span class="servicio-icon">🎨</span>
+                            <span class="servicio-titulo">Diseño Gráfico & Branding</span>
+                        </div>
+                        <span class="servicio-toggle-icon">▼</span>
+                    </div>
+                    <div class="servicio-detalles-content">
+                        <p>Identidad corporativa, logotipos, banners publicitarios y manuales de marca integrados a tu contenido.</p>
+                        <button class="btn-cotizar-servicio" onclick="event.stopPropagation(); cambiarPestana('contacto');">Cotizar Servicio</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 3: CATÁLOGO DE PROYECTOS -->
+        <section id="catalogo" class="tab-content">
+            <h2 class="section-title">Catálogo de Proyectos</h2>
+            
+            <div class="grid-container">
+                <div class="portfolio-item">
+                    <div class="portfolio-media">
+                        <video id="vid-1" muted playsinline preload="metadata">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                        </video>
+                        <button class="media-badge-btn" id="btn-vid-1" onclick="reproducirMuestraVideo('vid-1', 'btn-vid-1')">▶ Reproducir Muestra</button>
+                    </div>
+                    <span class="tag">Spot Publicitario</span>
+                    <h4>Campaña Promocional Comercial</h4>
+                    <p>Producción comercial completa con diseño de iluminación y animación gráfica.</p>
+                    <button class="btn-card" onclick="cambiarPestana('contacto')">Cotizar Proyecto Similar</button>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-media">
+                        <video id="vid-2" muted playsinline preload="metadata">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
+                        </video>
+                        <button class="media-badge-btn" id="btn-vid-2" onclick="reproducirMuestraVideo('vid-2', 'btn-vid-2')">▶ Reproducir Muestra</button>
+                    </div>
+                    <span class="tag">Institucional</span>
+                    <h4>Video Institucional de Impacto</h4>
+                    <p>Presentación de valores, instalaciones e hitos organizacionales.</p>
+                    <button class="btn-card" onclick="cambiarPestana('contacto')">Cotizar Proyecto Similar</button>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-media">
+                        <video id="vid-3" muted playsinline preload="metadata">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4">
+                        </video>
+                        <button class="media-badge-btn" id="btn-vid-3" onclick="reproducirMuestraVideo('vid-3', 'btn-vid-3')">▶ Reproducir Muestra</button>
+                    </div>
+                    <span class="tag">Cobertura de Eventos</span>
+                    <h4>Resumen Audiovisual de Congreso</h4>
+                    <p>Grabación multicámara, entrevistas y clip de momentos destacados.</p>
+                    <button class="btn-card" onclick="cambiarPestana('contacto')">Cotizar Proyecto Similar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 4: NOTICIAS -->
+        <section id="noticias" class="tab-content">
+            <h2 class="section-title">Últimas Noticias</h2>
+            <p class="section-subtitle">Información sintetizada y actualizada en tiempo real vía Informe 360.</p>
+            
+            <!-- CONTENEDOR PARA BANNERS AUTOAJUSTABLES ($0 USD) -->
+            <div class="banner-container">
+                <a href="#contacto" onclick="cambiarPestana('contacto')">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Banner Publicitario" onerror="this.parentElement.style.display='none';">
+                </a>
+            </div>
+
+            <div id="contenedor-noticias" class="noticias-grid">
+                <p style="text-align: center; grid-column: 1 / -1; color: var(--text-secondary);">Cargando noticias...</p>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 5: MATERIAL RECIENTE -->
+        <section id="material" class="tab-content">
+            <h2 class="section-title">Material Reciente</h2>
+            <p class="section-subtitle">Bitácora de rodajes, lanzamientos y procesos en estudio.</p>
+            
+            <div class="material-timeline">
+                <div class="timeline-card">
+                    <span>Octubre 2026</span>
+                    <h4>Redacción Periodística e Inteligencia Artificial</h4>
+                    <p>Integración de redacción formal autónoma y distribución de contenidos para Informe 360.</p>
+                </div>
+                <div class="timeline-card">
+                    <span>Septiembre 2026</span>
+                    <h4>Desarrollo Web & Identidad Corporativa</h4>
+                    <p>Actualización de plataformas digitales e integración de sistemas de contacto automatizado para Producciones 360.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 6: CONTACTO -->
+        <section id="contacto" class="tab-content">
+            <h2 class="section-title">Contacto y Ubicación</h2>
+            <div class="contacto-container">
+                <form class="contacto-form" id="form-contacto" action="https://formspree.io/f/xzezgygn" method="POST" onsubmit="enviarFormularioExitoso(event)">
+                    <input type="text" name="nombre" placeholder="Tu Nombre Completo" required maxlength="100">
+                    <input type="email" name="email" placeholder="Tu Correo Electrónico" required maxlength="100">
+                    
+                    <div class="form-row">
+                        <input type="text" name="empresa" placeholder="Nombre de la Empresa" required maxlength="100">
+                        <input type="text" name="cargo" placeholder="Cargo / Puesto" required maxlength="100">
+                    </div>
+
+                    <textarea name="mensaje" rows="4" placeholder="¿En qué proyecto te podemos ayudar?" required maxlength="500"></textarea>
+                    <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                </form>
+
+                <div class="ubicacion-info">
+                    <h3>PRODUCCIONES 360</h3>
+                    <p><strong>Ubicación:</strong> Calz. Lázaro Cárdenas #3670, Col. Jardines de San Ignacio, Zapopan, Jal.</p>
+                    <p><strong>Email:</strong> informe360noticias@gmail.com</p>
+                    <p><strong>Teléfono:</strong> +52 33 2765 5573</p>
+
+                    <a href="https://wa.me/523327655573?text=Hola,%20me%20interesa%20recibir%20información%20sobre%20sus%20servicios%20audiovisuales" 
+                       target="_blank" 
+                       class="btn-whatsapp">
+                        Enviar WhatsApp Directo
+                    </a>
+
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.88371383827!2d-103.4078864!3d20.6620577!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428ae02fb6fffff%3A0x8e83348f9ec26462!2sCalz.%20L%C3%A1zaro%20C%C3%A1rdenas%203670%2C%20Jardines%20de%20San%20Ignacio%2C%2045040%20Zapopan%2C%20Jal.!5e0!3m2!1ses!2smx!4v1700000000000!5m2!1ses!2smx" 
+                            width="100%" 
+                            height="180" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- VENTANA EMERGENTE (MODAL) PARA LEER NOTICIA COMPLETA -->
+    <div id="modal-noticia" class="modal-noticia-overlay" onclick="cerrarModalNoticia(event)">
+        <div class="modal-noticia-content" onclick="event.stopPropagation()">
+            <button class="modal-cerrar-btn" onclick="cerrarModalNoticia()">✕</button>
+            <div class="noticia-meta" style="margin-bottom: 0.5rem;">
+                <span id="modal-categoria" class="noticia-categoria">General</span>
+                <span id="modal-fecha" class="noticia-fecha"></span>
+            </div>
+            <h2 id="modal-titulo" style="font-size: 1.4rem; line-height: 1.3; color: #FFFFFF; margin-bottom: 0.5rem;"></h2>
+            <img id="modal-imagen" class="modal-imagen" src="" alt="Noticia">
+            <div id="modal-cuerpo" class="modal-cuerpo"></div>
+        </div>
+    </div>
+
+    <!-- Botón flotante WhatsApp -->
+    <a href="https://wa.me/523327655573?text=Hola,%20quiero%20cotizar%20un%20proyecto" class="whatsapp-flotante" target="_blank">💬</a>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; 2026 PRODUCCIONES 360. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const videoIntro = document.getElementById('intro-video');
+        const fallbackBtn = document.getElementById('intro-fallback-btn');
+        const overlayIntro = document.getElementById('intro-overlay');
+
+        let introTimer = setTimeout(cerrarIntro, 4000);
+
+        if (videoIntro) {
+            videoIntro.play().catch(() => {
+                if (fallbackBtn) fallbackBtn.style.display = 'block';
+            });
+        }
+
+        function iniciarVideoAudio() {
+            if (videoIntro) videoIntro.play();
+            if (fallbackBtn) fallbackBtn.style.display = 'none';
+        }
+
+        function cerrarIntro() {
+            if (overlayIntro && overlayIntro.style.display !== 'none') {
+                clearTimeout(introTimer);
+                overlayIntro.classList.add('fade-out');
+                setTimeout(() => { overlayIntro.style.display = 'none'; }, 800);
+            }
+        }
+
+        function cambiarPestana(idPestana) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            const seccionDestino = document.getElementById(idPestana);
+            if (seccionDestino) seccionDestino.classList.add('active');
+
+            const botonActivo = document.querySelector(`.nav-btn[data-tab="${idPestana}"]`);
+            if (botonActivo) botonActivo.classList.add('active');
+
+            if (idPestana === 'noticias') { cargarNoticiasSanity(); }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        let noticiasGuardadas = [];
+
+        async function cargarNoticiasSanity() {
+            const contenedor = document.getElementById('contenedor-noticias');
+            if (!contenedor) return;
+
+            const SANITY_PROJECT_ID = "r5pvd6kj";
+            const SANITY_DATASET = "production";
+            
+            const query = encodeURIComponent(`*[_type == "noticia" && !($prueba in titulo)] | order(fechaPublicacion desc)[0..9]{
+                _id,
+                titulo,
+                contenido,
+                categoria,
+                imagenUrl,
+                fechaPublicacion
+            }`);
+            
+            const params = encodeURIComponent(`&$prueba="Informe 360 activa sistema automatizado"`);
+            const urlSanity = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/${SANITY_DATASET}?query=${query}${params}`;
+
+            try {
+                const response = await fetch(urlSanity);
+                const result = await response.json();
+                noticiasGuardadas = result.result || [];
+
+                if (noticiasGuardadas.length === 0) {
+                    contenedor.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: var(--text-secondary);">No hay noticias publicadas por el momento.</p>';
+                    return;
+                }
+
+                contenedor.innerHTML = '';
+                noticiasGuardadas.forEach((nota, index) => {
+                    const fechaFormat = nota.fechaPublicacion 
+                        ? new Date(nota.fechaPublicacion).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })
+                        : '';
+
+                    const imagenSrc = nota.imagenUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+
+                    // Extracto de exactamente 50 caracteres
+                    const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
+                    const extracto50 = textoLimpio.length > 50 ? textoLimpio.substring(0, 50) + '...' : textoLimpio;
+
+                    const tarjeta = `
+                        <article class="tarjeta-noticia" onclick="abrirModalNoticia(${index})">
+                            <div class="noticia-imagen-wrapper">
+                                <img src="${imagenSrc}" alt="${nota.titulo}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';">
+                                <div class="noticia-overlay-titulo">
+                                    <h3>${nota.titulo || 'Sin título'}</h3>
+                                </div>
+                            </div>
+                            <div class="noticia-body-info">
+                                <div class="noticia-meta">
+                                    <span class="noticia-categoria">${nota.categoria || 'General'}</span>
+                                    <span class="noticia-fecha">${fechaFormat}</span>
+                                </div>
+                                <p class="noticia-extracto">${extracto50}</p>
+                                <span class="btn-expandir-noticia">Leer noticia completa →</span>
+                            </div>
+                        </article>
+                    `;
+                    contenedor.innerHTML += tarjeta;
+                });
+            } catch (error) {
+                console.error("Error al cargar noticias de Sanity:", error);
+                contenedor.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: #ff5555;">No se pudieron cargar las noticias en este momento.</p>';
+            }
+        }
+
+        function abrirModalNoticia(index) {
+            const nota = noticiasGuardadas[index];
+            if (!nota) return;
+
+            document.getElementById('modal-categoria').innerText = nota.categoria || 'General';
+            document.getElementById('modal-fecha').innerText = nota.fechaPublicacion 
+                ? new Date(nota.fechaPublicacion).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+                : '';
+            document.getElementById('modal-titulo').innerText = nota.titulo || '';
+            document.getElementById('modal-cuerpo').innerText = nota.contenido || '';
+
+            const imgEl = document.getElementById('modal-imagen');
+            if (nota.imagenUrl) {
+                imgEl.src = nota.imagenUrl;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+
+            document.getElementById('modal-noticia').classList.add('active');
+        }
+
+        function cerrarModalNoticia(e) {
+            document.getElementById('modal-noticia').classList.remove('active');
+        }
+
+        function toggleServicioFila(elemento) {
+            const yaEstaActivo = elemento.classList.contains('active');
+            document.querySelectorAll('.servicio-fila-item').forEach(item => item.classList.remove('active'));
+            if (!yaEstaActivo) elemento.classList.add('active');
+        }
+
+        const temporizadoresVideos = {};
+        function reproducirMuestraVideo(idVideo, idBoton) {
+            const videoEl = document.getElementById(idVideo);
+            const botonEl = document.getElementById(idBoton);
+            if (!videoEl) return;
+            videoEl.pause();
+            videoEl.currentTime = 0;
+            if (temporizadoresVideos[idVideo]) clearTimeout(temporizadoresVideos[idVideo]);
+            if (botonEl) botonEl.style.display = 'none';
+
+            videoEl.play().then(() => {
+                temporizadoresVideos[idVideo] = setTimeout(() => {
+                    videoEl.pause();
+                    videoEl.currentTime = 0;
+                    if (botonEl) botonEl.style.display = 'block';
+                }, 5000);
+            }).catch(() => {
+                if (botonEl) botonEl.style.display = 'block';
+                alert('No se pudo reproducir la muestra en este dispositivo.');
+            });
+        }
+
+        async function enviarFormularioExitoso(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    alert('¡Mensaje enviado con éxito! Nos pondremos en contacto contigo a la brevedad.');
+                    form.reset();
+                } else {
+                    alert('Hubo un problema al enviar el mensaje. Por favor intenta de nuevo.');
+                }
+            } catch (error) {
+                alert('Error de conexión. Verifica tu red e intenta nuevamente.');
+            }
+        }
+
+        document.addEventListener('contextmenu', e => {
+            if (e.target.tagName === 'VIDEO' || e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
