@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.unsplash.com https://commondatastorage.googleapis.com https://formspree.io https://www.google.com https://*.api.sanity.io https://i.ibb.co https://*.imgur.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' https://commondatastorage.googleapis.com; connect-src 'self' https://formspree.io https://r5pvd6kj.api.sanity.io; frame-src https://www.google.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.unsplash.com https://commondatastorage.googleapis.com https://formspree.io https://www.google.com https://*.api.sanity.io https://i.ibb.co https://*.imgur.com https://images.weserv.nl; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' https://commondatastorage.googleapis.com; connect-src 'self' https://formspree.io https://r5pvd6kj.api.sanity.io; frame-src https://www.google.com;">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     
@@ -214,7 +214,7 @@
         /* --- HERO SECCIÓN --- */
         .hero {
             position: relative;
-            min-height: 50vh;
+            min-height: 45vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -307,7 +307,7 @@
         .carrusel-container {
             position: relative;
             width: 100%;
-            height: 380px;
+            height: 400px;
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -351,14 +351,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.95) 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.95) 100%);
             z-index: 2;
         }
 
         .carrusel-info {
             position: relative;
             z-index: 3;
-            padding: 2rem;
+            padding: 2.2rem;
             max-width: 850px;
         }
 
@@ -368,7 +368,7 @@
             color: #FFFFFF;
             font-size: 0.75rem;
             font-weight: 800;
-            padding: 0.3rem 0.7rem;
+            padding: 0.35rem 0.8rem;
             border-radius: 4px;
             text-transform: uppercase;
             margin-bottom: 0.8rem;
@@ -397,7 +397,7 @@
 
         .carrusel-controles {
             position: absolute;
-            bottom: 15px;
+            bottom: 20px;
             right: 20px;
             z-index: 4;
             display: flex;
@@ -409,8 +409,8 @@
             background: rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.3);
             color: #FFFFFF;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -443,7 +443,7 @@
 
         .indicador-dot.active {
             background: var(--accent-blue);
-            width: 22px;
+            width: 24px;
             border-radius: 10px;
         }
 
@@ -784,7 +784,7 @@
         .noticia-imagen-wrapper {
             position: relative;
             width: 100%;
-            height: 230px;
+            height: 220px;
             background-color: #080808;
             display: flex;
             align-items: center;
@@ -921,7 +921,7 @@
 
         .lectura-noticia-cuerpo {
             font-size: 1.05rem;
-            line-height: 1.8;
+            line-height: 1.85;
             color: #E0E0E0;
             white-space: pre-line;
             margin-top: 1.5rem;
@@ -1146,12 +1146,11 @@
             <!-- CARRUSEL DE NOTICIAS DE MAYOR IMPACTO -->
             <div class="carrusel-seccion">
                 <div class="carrusel-header">
-                    <h2>Últimas Noticas de Impacto</h2>
+                    <h2>Últimas Noticias de Impacto</h2>
                     <span style="font-size: 0.85rem; color: #AAAAAA;">Actualizado en tiempo real</span>
                 </div>
                 
                 <div class="carrusel-container" id="carrusel-wrapper">
-                    <!-- Los slides se cargarán dinámicamente desde Sanity -->
                     <div style="display: flex; height: 100%; align-items: center; justify-content: center; color: #888888;">
                         Cargando noticias destacadas...
                     </div>
@@ -1330,7 +1329,6 @@
             <h2 class="section-title">Últimas Noticias</h2>
             <p class="section-subtitle">Información sintetizada y actualizada en tiempo real vía Informe 360.</p>
             
-            <!-- BANNERS AUTOAJUSTABLES -->
             <div class="banner-container">
                 <a href="#contacto" onclick="cambiarPestana('contacto')">
                     <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Banner Publicitario" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none';">
@@ -1491,6 +1489,13 @@
 
         const FALLBACK_IMAGEN = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
 
+        // PROXY CDN QUE ELIMINA EL BLOQUEO CORS/HOTLINKING DE LOS PERIÓDICOS
+        function obtenerImagenLimpia(urlOriginal) {
+            if (!urlOriginal || urlOriginal.trim() === '') return FALLBACK_IMAGEN;
+            if (urlOriginal.includes('unsplash.com') || urlOriginal.includes('imgur.com')) return urlOriginal;
+            return `https://images.weserv.nl/?url=${encodeURIComponent(urlOriginal)}&default=${encodeURIComponent(FALLBACK_IMAGEN)}`;
+        }
+
         async function cargarNoticiasSanity() {
             const SANITY_PROJECT_ID = "r5pvd6kj";
             const SANITY_DATASET = "production";
@@ -1511,7 +1516,6 @@
                 const result = await response.json();
                 const rawNoticias = result.result || [];
 
-                // Filtrar duplicados
                 const titulosVistos = new Set();
                 noticiasGuardadas = rawNoticias.filter(nota => {
                     if (!nota.titulo) return false;
@@ -1521,7 +1525,6 @@
                     return true;
                 });
 
-                // Renderizar carrusel en Home y Grid en Noticias
                 renderizarCarruselHome();
                 renderizarGridNoticias();
 
@@ -1530,7 +1533,6 @@
             }
         }
 
-        // RENDERIZA LAS 4 NOTICIAS DE MAYOR IMPACTO EN EL CARRUSEL DEL HOME
         function renderizarCarruselHome() {
             const contenedor = document.getElementById('carrusel-wrapper');
             if (!contenedor) return;
@@ -1544,7 +1546,7 @@
 
             let slidesHtml = '';
             destacadas.forEach((nota, idx) => {
-                const img = nota.imagenUrl && nota.imagenUrl.trim() !== '' ? nota.imagenUrl : FALLBACK_IMAGEN;
+                const img = obtenerImagenLimpia(nota.imagenUrl);
                 const activeClass = idx === 0 ? 'active' : '';
                 const cat = nota.categoria || 'ÚLTIMA HORA';
                 const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
@@ -1562,7 +1564,6 @@
                 `;
             });
 
-            // Agregar botones e indicadores
             let dotsHtml = '';
             destacadas.forEach((_, idx) => {
                 dotsHtml += `<div class="indicador-dot ${idx === 0 ? 'active' : ''}" onclick="irASlide(${idx}); event.stopPropagation();"></div>`;
@@ -1578,7 +1579,6 @@
 
             contenedor.innerHTML = slidesHtml + controlesHtml;
 
-            // Iniciar rotación automática cada 5 segundos
             if (temporizadorCarrusel) clearInterval(temporizadorCarrusel);
             temporizadorCarrusel = setInterval(siguienteSlide, 5000);
         }
@@ -1602,7 +1602,6 @@
         function siguienteSlide() { irASlide(indexCarruselActual + 1); }
         function slideAnterior() { irASlide(indexCarruselActual - 1); }
 
-        // RENDERIZA TODAS LAS NOTICIAS EN EL GRID DE 3 COLUMNAS EN LA SECCIÓN NOTICIAS
         function renderizarGridNoticias() {
             const contenedor = document.getElementById('contenedor-noticias');
             if (!contenedor) return;
@@ -1618,9 +1617,9 @@
                     ? new Date(nota.fechaPublicacion).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })
                     : '';
 
-                const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' ? nota.imagenUrl : FALLBACK_IMAGEN;
+                const imagenSrc = obtenerImagenLimpia(nota.imagenUrl);
                 const textoLimpio = (nota.contenido || '').replace(/\n/g, ' ');
-                const extracto50 = textoLimpio.length > 50 ? textoLimpio.substring(0, 50) + '...' : textoLimpio;
+                const extracto50 = textoLimpio.length > 55 ? textoLimpio.substring(0, 55) + '...' : textoLimpio;
 
                 const tarjeta = `
                     <article class="tarjeta-noticia" onclick="abrirLecturaNoticia(${index})">
@@ -1644,7 +1643,6 @@
             });
         }
 
-        // VISTA DE LECTURA COMPLETA
         function abrirLecturaNoticia(index) {
             const nota = noticiasGuardadas[index];
             if (!nota) return;
@@ -1657,7 +1655,7 @@
             document.getElementById('lectura-cuerpo').innerText = nota.contenido || '';
 
             const imgEl = document.getElementById('lectura-imagen');
-            const imagenSrc = nota.imagenUrl && nota.imagenUrl.trim() !== '' ? nota.imagenUrl : FALLBACK_IMAGEN;
+            const imagenSrc = obtenerImagenLimpia(nota.imagenUrl);
             
             imgEl.src = imagenSrc;
             imgEl.onerror = function() { this.src = FALLBACK_IMAGEN; };
@@ -1715,7 +1713,6 @@
             }
         }
 
-        // Cargar noticias al iniciar
         document.addEventListener('DOMContentLoaded', cargarNoticiasSanity);
 
         document.addEventListener('contextmenu', e => {
